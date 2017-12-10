@@ -59,3 +59,4 @@ freeline_project_description.json
 /app/src/main/res/values/app_config.xml
 *.class
 *.class
+.git*

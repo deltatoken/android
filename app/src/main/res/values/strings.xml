@@ -1,0 +1,37 @@
+<resources>
+    <string name="app_name">Transcodium</string>
+    <string name="multi_coin_wallet">Multi Currency Wallet</string>
+    <string name="multi_coin_wallet_desc">Manage your TNS Tokens and others coins directly on your mobile</string>
+    <string name="visual_media_studio">Visual Media Studio</string>
+    <string name="visual_media_studio_desc">Complex visual media editing on your mobile.</string>
+    <string name="mobile_miner">Mobile Miner</string>
+    <string name="mobile_miner_desc">Earn TNS Tokens by using your device as a worker (miner)</string>
+    <string name="builtin_exchange">Builtin Exchange</string>
+    <string name="builtin_exchange_desc">Trade directly from your mobile with no stress</string>
+    <string name="drawer_open">Open</string>
+    <string name="drawer_close">Close</string>
+    <string name="about">About</string>
+    <string name="contact">Contact</string>
+    <string name="exit">Exit</string>
+    <string name="builtin_security">Builtin Security</string>
+    <string name="builtin_security_desc">Set fingerprint or Pin to avoid access by authorized persons.</string>
+
+    <string name="title_activity_app_intro">App Intro</string>
+    <string name="wallet">Wallet</string>
+    <string name="studio">Studio</string>
+    <string name="exchange">Exchange</string>
+    <string name="worker">Worker</string>
+
+    <string name="login">Login</string>
+    <string name="exit_app">Exit App</string>
+    <string name="exit_app_msg">Confirm to exit Transcodium</string>
+    <string name="cancel">Cancel</string>
+    <string name="tagline">The future of transcoding</string>
+    <string name="login_with_google">Login with Google</string>
+    <string name="login_with_facebook">Login with Facebook</string>
+    <string name="login_with_twitter">Login with Twitter</string>
+    <string name="signing_in">Signing in ..</string>
+    <string name="spinner_loading">Loading ..</string>
+    <string name="operation_canceled_by_user">Operation canceled by user</string>
+    <string name="auth_failed">Authentication failed</string>
+</resources>

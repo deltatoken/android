@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.AppBarLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:minHeight="?attr/actionBarSize"
+    android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+    android:background="?attr/colorPrimaryDark"
+    app:elevation="10dp">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:elevation="10dp"
+        />
+
+    <android.support.design.widget.TabLayout
+        android:id="@+id/tab_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:tabMode="fixed"
+        app:tabGravity="fill">
+
+        <android.support.design.widget.TabItem
+            android:id="@+id/tab_wallet"
+            android:tag="@string/wallet"
+            android:icon="@drawable/tab_wallet_selector"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleType="fitXY"
+            />
+
+        <android.support.design.widget.TabItem
+            android:id="@+id/tab_studio"
+            android:tag="@string/studio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:icon="@drawable/tab_studio_selector"
+            android:scaleType="fitXY"
+            />
+
+        <android.support.design.widget.TabItem
+            android:id="@+id/tab_exchange"
+            android:tag="@string/exchange"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:icon="@drawable/tab_exchange_selector"
+            android:scaleType="fitXY"
+            />
+
+        <android.support.design.widget.TabItem
+            android:id="@+id/worker"
+            android:tag="@string/worker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:icon="@drawable/tab_worker_selector"
+            android:scaleType="fitXY"
+            />
+
+    </android.support.design.widget.TabLayout>
+
+</android.support.design.widget.AppBarLayout>
