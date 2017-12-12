@@ -134,11 +134,7 @@ class AppIntroActivity:AppIntro() {
         }
 
         //open activity AuthActivity
-        startActivity(
-                intentFor<MainActivity>()
-                        .clearTop()
-                        .newTask()
-        )
+       startClassActivity(this,WalletActivity::class.java)
 
         //finish the activity
         this.finish()

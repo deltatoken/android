@@ -3,7 +3,7 @@ package com.transcodium.app
 import android.os.Bundle
 
 
-class MainActivity : DrawerActivity() {
+class WalletActivity : DrawerActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
 

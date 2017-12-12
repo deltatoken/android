@@ -38,9 +38,12 @@ class LoginActivity : AppCompatActivity() {
        FirebaseAuth.getInstance()
     }
 
-    val GOOGLE_SIGNIN = 100
-    val FACEBOOK_SIGNIN = 200
-    val TWITTER_SIGNIN = 300
+    //we will use intent key to detect google signin result
+    val GOOGLE_SIGNIN = 777
+
+    //we wil use boolean for the other login results
+    val ISFACEBOOK = false
+    val ISTWITTER = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -87,7 +90,7 @@ class LoginActivity : AppCompatActivity() {
 
         //init google sigin
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(googleWebClientId)
+                .requestIdToken(getString(R.string.google_webclient_id))
                 .requestEmail()
                 .build()
 
@@ -107,7 +110,8 @@ class LoginActivity : AppCompatActivity() {
      */
     fun signInFacebook(){
 
-    }
+    }//end login fb
+
 
     /**
      * handle GoogleSingin Result
@@ -136,6 +140,9 @@ class LoginActivity : AppCompatActivity() {
      */
     fun firebaseSignIn(credential: AuthCredential){
 
+        //spin spinner
+        spinner.show()
+
         //signin into firebase
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener{
@@ -143,13 +150,21 @@ class LoginActivity : AppCompatActivity() {
 
                     //if successful, we move to next
                     if(task.isSuccessful){
+
+                        //to prevent data leak, cancel spinner before leaving
+                        //window
+                        spinner.cancel()
+
                         //login to app
-                        startClassActivity(mActivity,MainActivity::class.java)
+                        startClassActivity(mActivity,WalletActivity::class.java)
                     }else{
 
                         //auth failed
                         longToast(R.string.auth_failed)
                     }//end if
+
+                    //if we are here then means it wasnt success
+                    spinner.hide()
 
                 }//end onComplete
 
@@ -161,13 +176,12 @@ class LoginActivity : AppCompatActivity() {
      */
     override  fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
 
-        //lets check if its our login request
-        when(resultCode){
-
-            //if google
-            GOOGLE_SIGNIN -> handleGoogleSignInResult(data)
+        //if the returned results is from google signin request
+        if(requestCode == GOOGLE_SIGNIN){
+            handleGoogleSignInResult(data)
         }
-    }///end
+
+    }///end event fun
 
 
 

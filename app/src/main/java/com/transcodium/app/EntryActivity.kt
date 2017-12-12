@@ -19,15 +19,15 @@ import org.jetbrains.anko.newTask
 class EntryActivity : AppCompatActivity() {
 
     private lateinit var nextActivityClass: Class<*>
-    private lateinit var mAuth: FirebaseAuth
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
-        //initilizd firebase
-      // FirebaseApp.initializeApp(this as Context)
 
-        //auth
-      //  mAuth = FirebaseAuth.getInstance()
+        FirebaseAuth.getInstance().signOut()
+
+        val currentUser  = FirebaseAuth.getInstance().currentUser
 
         ///is intro completed ?
         val introCompleted :Any? = getSharedPref(this, "intro_completed") as Boolean?
@@ -40,14 +40,14 @@ class EntryActivity : AppCompatActivity() {
 
         }
          //if user has no account, send to login to create
-        else if(false == false){
+        else if(currentUser == null){
 
             nextActivityClass = LoginActivity::class.java
 
         }else{
 
             //else send to main activity
-            nextActivityClass = MainActivity::class.java
+            nextActivityClass = WalletActivity::class.java
         }//end if else
 
         //start the activity clearing the activity stack
