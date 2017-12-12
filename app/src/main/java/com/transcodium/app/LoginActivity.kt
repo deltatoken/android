@@ -1,15 +1,20 @@
 package com.transcodium.app
 
-import android.content.Context
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import android.content.Intent
+import android.util.Log
+import com.facebook.CallbackManager
+import com.facebook.FacebookCallback
+import com.facebook.FacebookException
+import com.facebook.login.LoginManager
+import com.facebook.login.LoginResult
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.common.api.ApiException
-import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.AuthCredential
+import com.google.firebase.auth.FacebookAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import org.jetbrains.anko.longToast
@@ -21,29 +26,34 @@ import org.jetbrains.anko.longToast
  */
 class LoginActivity : AppCompatActivity() {
 
-    val spinner by lazy {
+    //progress loader
+    private val spinner by lazy {
         progressSpinner(this,R.string.signing_in)
     }
 
-    val mActivity by lazy{
+    //activity
+    private val mActivity by lazy{
         this
     }
 
-    //firebase
-    val mAuth:FirebaseAuth by lazy{
-
-        FirebaseApp.initializeApp(this as Context)
+    //firebase auth
+    private val mAuth:FirebaseAuth by lazy{
 
         //initialize firebase
        FirebaseAuth.getInstance()
     }
 
+    //facebook callback manager
+    private val fbCallbackManager by lazy{
+        CallbackManager.Factory.create();
+    }
+
     //we will use intent key to detect google signin result
-    val GOOGLE_SIGNIN = 777
+    private val GOOGLE_SIGNIN = 777
 
     //we wil use boolean for the other login results
-    val ISFACEBOOK = false
-    val ISTWITTER = false
+    private var IS_FACEBOOK_SIGNIN = false
+    private var IS_TWITTER_SIGNIN = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -75,10 +85,9 @@ class LoginActivity : AppCompatActivity() {
 
         when(social){
             "google" -> signInGoogle()
-            //"facebook" -> simpleAuth.connectFacebook(processLoginAuth(social))
+            "facebook" -> signInFacebook()
             //"twitter" -> simpleAuth.connectTwitter(processLoginAuth(social))
         }//end when
-
 
     }//end proecss Login
 
@@ -86,7 +95,7 @@ class LoginActivity : AppCompatActivity() {
     /**
      * request google login
      */
-    fun signInGoogle(){
+    private fun signInGoogle(){
 
         //init google sigin
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -101,22 +110,13 @@ class LoginActivity : AppCompatActivity() {
         //start activity
         startActivityForResult(signInIntent, GOOGLE_SIGNIN)
 
-
     }//end request google login
-
-
-    /**
-     * signInFacebook
-     */
-    fun signInFacebook(){
-
-    }//end login fb
 
 
     /**
      * handle GoogleSingin Result
      */
-    fun handleGoogleSignInResult(data: Intent?){
+    private fun handleGoogleSignInResult(data: Intent?){
 
         try{
             val task = GoogleSignIn.getSignedInAccountFromIntent(data)
@@ -124,16 +124,77 @@ class LoginActivity : AppCompatActivity() {
             val acct = task.getResult(ApiException::class.java)
 
             //get credentials
-            val credential = GoogleAuthProvider.getCredential(acct.idToken,null)
+            val credential = GoogleAuthProvider
+                    .getCredential(acct.idToken,null)
 
             //signin
             firebaseSignIn(credential)
 
         }catch(e: ApiException){
+
+            longToast(R.string.auth_failed)
+
+            Log.e("Google Auth Failed: ",e.message)
             e.printStackTrace()
         }
-    }//end
+    }//end handle google signin result
 
+
+    /**
+     * signInFacebook
+     */
+   private fun signInFacebook(){
+
+        //set IS_FACEBOOK_SIGNIN to true
+        IS_FACEBOOK_SIGNIN = true
+
+        //get instance of the login manager
+        val loginManager = LoginManager.getInstance()
+
+        //lets set the permissions or scopes
+        loginManager.logInWithReadPermissions(this,listOf("email","public_profile"))
+
+        //lets now start the auth and listen to the call back
+        loginManager.registerCallback(
+                fbCallbackManager,object: FacebookCallback<LoginResult>{
+
+            //listen to success callback
+            override fun onSuccess(result: LoginResult) {
+
+                //access token
+                val accessToken = result.accessToken
+
+                //lets get the credentials from firebase
+                val credential = FacebookAuthProvider.getCredential(
+                                accessToken.token
+                )
+
+                //now sign into app using firebase
+                firebaseSignIn(credential)
+            }//end on success
+
+            //listen to error
+            override fun onError(error: FacebookException) {
+
+                //show auth failed
+                longToast(R.string.auth_failed)
+
+                Log.e("Facebook Auth Error: ",error.message)
+
+                error.printStackTrace()
+            }//end error
+
+            //if cancelled
+            override fun onCancel() {
+                longToast(R.string.request_aborted_by_user)
+            }//end
+
+        })//end callback listener
+
+    }//end sigin to facebook
+
+
+    //sigin
 
     /**
      *firebase signIn
@@ -161,6 +222,14 @@ class LoginActivity : AppCompatActivity() {
 
                         //auth failed
                         longToast(R.string.auth_failed)
+
+                        //get error
+                        val err = task.exception
+
+                        err?.printStackTrace()
+
+                        //log error
+                        Log.e("Firebase Auth Failed",err?.message)
                     }//end if
 
                     //if we are here then means it wasnt success
@@ -179,6 +248,11 @@ class LoginActivity : AppCompatActivity() {
         //if the returned results is from google signin request
         if(requestCode == GOOGLE_SIGNIN){
             handleGoogleSignInResult(data)
+        }
+        //if is facebook
+        else if(IS_FACEBOOK_SIGNIN){
+            //let fb handle the result
+            fbCallbackManager.onActivityResult(requestCode,resultCode,data)
         }
 
     }///end event fun

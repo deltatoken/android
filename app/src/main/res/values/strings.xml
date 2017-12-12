@@ -34,4 +34,5 @@
     <string name="spinner_loading">Loading ..</string>
     <string name="operation_canceled_by_user">Operation canceled by user</string>
     <string name="auth_failed">Authentication failed</string>
+    <string name="request_aborted_by_user">Request aborted by user</string>
 </resources>
