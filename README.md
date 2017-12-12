@@ -14,21 +14,24 @@ Make sure you change the configuration data in it
 
 ## Todo
 #### App Level Features 
-[x] Social Login Authentication
+- [x] Social Login Authentication
 
-[x] Firebase Sync
+- [x] Firebase Sync
 
-[x] Security Settings \(Finger Print & Pin Code app protection)
+- [ ] Security Settings \(Finger Print & Pin Code app protection)
 
 
 #### Wallet 
-[x] web3j integration
+- [x] web3j integration
 
-[ ] TNS Token integration
+- [ ] TNS Token integration
 
-[ ] Ability for user to add custom tokens (example: Golem, Augur , EOS, Salt ...)
+- [ ] Ability for user to add custom tokens (example: Golem, Augur , EOS, Salt ...)
 
 #### Builtin Exchange 
-[ ] Exchange market
+- [ ] Exchange market
+
+#### Visual Editing Studio
+- [ ] Editing Studio
 
 
