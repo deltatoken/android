@@ -285,11 +285,6 @@ fun <T> startClassActivity(
     activity.startActivity(i)
 }//end fun
 
-//set header info
-fun setDrawerHeaderInfo(context: Context,headerView: View){
-
-}//end fun
-
 
 /**
  * a helper to hide system UI enabling better full screen

@@ -17,7 +17,12 @@ import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.FacebookAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
+import com.twitter.sdk.android.core.*
+import com.twitter.sdk.android.core.identity.TwitterAuthClient
 import org.jetbrains.anko.longToast
+import com.google.firebase.auth.TwitterAuthProvider
+
+
 
 
 /**
@@ -194,7 +199,60 @@ class LoginActivity : AppCompatActivity() {
     }//end sigin to facebook
 
 
-    //sigin
+    //sigin twitter
+    fun signinTwitter(){
+
+        //set signal to true
+        IS_TWITTER_SIGNIN = true
+
+        //init twitter
+        val config = TwitterConfig.Builder(this)
+                .logger(DefaultLogger(Log.ERROR))
+                .twitterAuthConfig(TwitterAuthConfig(
+                        getString(R.string.twitter_consumer_key),
+                        getString(R.string.twitter_consumer_secret)
+                ))
+                .debug(true)
+                .build()
+        Twitter.initialize(config)
+
+        //twitter Client
+        val twitterAuthClient = TwitterAuthClient()
+
+        //authorize request
+        twitterAuthClient.authorize(this, object: Callback<TwitterSession>(){
+
+            //on success
+            override fun success(result: Result<TwitterSession>) {
+
+                //session
+                val session = result.data
+
+                //get crednetials
+                val credential = TwitterAuthProvider.getCredential(
+                        session.authToken.token,
+                        session.authToken.secret)
+
+                //login
+                firebaseSignIn(credential)
+            }//end success
+
+
+            //if failed
+            override fun failure(exception: TwitterException) {
+
+                //auth failed
+                longToast(R.string.auth_failed)
+
+                //print stacktrace
+                exception.printStackTrace()
+
+                Log.e("Twitter Auth Failed:",exception.message)
+            }//end if failed
+
+        })//end autheorize
+
+    }//end sign in twitter
 
     /**
      *firebase signIn

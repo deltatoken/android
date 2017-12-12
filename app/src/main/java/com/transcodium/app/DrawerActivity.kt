@@ -15,6 +15,9 @@ import android.support.v7.widget.Toolbar
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
+import android.widget.ImageView
+import com.google.firebase.auth.FirebaseAuth
+import org.jetbrains.anko.find
 
 /**
  * Created by dr_success on 8/12/2017.
@@ -45,6 +48,23 @@ open class DrawerActivity: AppCompatActivity(){
 
     private lateinit var drawerToggle: ActionBarDrawerToggle
 
+    val currentUser by lazy {
+        FirebaseAuth.getInstance().currentUser
+    }
+
+    /**
+     * check if user is logged in, since
+     * this is almost inherited by most activities requiring login
+     */
+    override  fun onStart() {
+        super.onStart()
+
+        //go to login
+        if(currentUser == null){
+            startClassActivity(this,LoginActivity::class.java,true)
+        }
+    }//end on start
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -54,12 +74,9 @@ open class DrawerActivity: AppCompatActivity(){
         //remove elevation
         drawerLayout.drawerElevation = 0f
 
-        //lets get the headerView of the drawer and set the neccessary vars
-        val headerView: View = navView.getHeaderView(0)
 
         //set Header Info
-        setDrawerHeaderInfo(this,headerView)
-
+        setDrawerHeaderInfo()
 
         //set the scrim color (the dark overlay fading when the drawer is opened)
         drawerLayout.setScrimColor(Color.TRANSPARENT)
@@ -75,16 +92,16 @@ open class DrawerActivity: AppCompatActivity(){
         ){
             //events
 
-                /**
-                 * onDrawerSlide
-                 */
-                //push content on drawer open
-                override fun onDrawerSlide(drawerView:View, offset: Float ){
+            /**
+             * onDrawerSlide
+             */
+            //push content on drawer open
+            override fun onDrawerSlide(drawerView:View, offset: Float ){
 
-                    contentView.translationX = (offset * drawerView.width)
+                contentView.translationX = (offset * drawerView.width)
 
-                    super.onDrawerSlide(drawerView, offset)
-                }//end
+                super.onDrawerSlide(drawerView, offset)
+            }//end
 
 
         }//end toggle  options and events
@@ -175,6 +192,25 @@ open class DrawerActivity: AppCompatActivity(){
         //onConfigurationChanged
         drawerToggle.onConfigurationChanged(newConfig)
     }//end
+
+
+    //set Header info
+    private fun setDrawerHeaderInfo(){
+
+        //lets get the headerView of the drawer and set the neccessary vars
+        val headerView: View = navView.getHeaderView(0)
+
+        //lets get profile phot
+        val profilePic = currentUser?.phoneNumber
+
+        //if not empty lets update it
+        if(!profilePic.isNullOrBlank()){
+
+        }//end if
+
+
+    }//end set header info
+
 
 
 }//end class

@@ -81,6 +81,8 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
         exclude group: 'com.android.support', module: 'support-core-utils'
     }//end fb lib exclude
+
+    implementation 'com.twitter.sdk.android:twitter-core:3.1.1'
 }
 
 //apply google services
