@@ -1,10 +1,9 @@
-[9:00 AM, 12/12/2017] Razzak India: 
-[9:00 AM, 12/12/2017] Razzak India: ##Transcodium Android Wallet, Minner and Exchange
+## Transcodium Android Wallet, Minner and Exchange
 Transcodium's android minner, wallet and exchange in pure java and kotlin language. This app will
 also support other third party tokens and coins.
 This is an imcomplete project, we are still working on it ,be sure to watch this repo for updates 
 
-##How to Build 
+## How to Build 
 1. Rename file app_config.xml.rename to app_config.xml 
 Make sure you change the configuration data in it 
 [app_config.xml.rename can be found in](app/src/main/res/values)
@@ -13,16 +12,23 @@ Make sure you change the configuration data in it
 4. Allow gradle to sync project with dependencies 
 5. Build Project
 
-##Todo
-####App Level Features 
-[*] Social Login Authentication 
-[*] Firebase Sync
-[ ] Security Settings \(Finger Print & Pin Code app protection)
+## Todo
+#### App Level Features 
+[x] Social Login Authentication
 
-####Wallet 
-[*] web3j integration
+[x] Firebase Sync
+
+[x] Security Settings \(Finger Print & Pin Code app protection)
+
+
+#### Wallet 
+[x] web3j integration
+
 [ ] TNS Token integration
+
 [ ] Ability for user to add custom tokens (example: Golem, Augur , EOS, Salt ...)
 
-####Builtin Market 
-[ ] market
+#### Builtin Exchange 
+[ ] Exchange market
+
+
