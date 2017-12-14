@@ -24,9 +24,6 @@ class EntryActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
-
-        FirebaseAuth.getInstance().signOut()
-
         val currentUser  = FirebaseAuth.getInstance().currentUser
 
         ///is intro completed ?

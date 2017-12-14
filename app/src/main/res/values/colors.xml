@@ -21,4 +21,6 @@
     <color name="google_plus">#dd4b39</color>
     <color name="twitter">#55acee</color>
     <color name="whiteAlpha">#66ffffff</color>
+    <color name="whiteAlpha80">#ccffffff</color>
+    <color name="lightBlueLigthen1">#81d4fa</color>
 </resources>

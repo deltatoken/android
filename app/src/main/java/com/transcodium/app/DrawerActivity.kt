@@ -11,12 +11,17 @@ import android.support.v4.view.GravityCompat
 import android.support.v4.widget.DrawerLayout
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.CardView
 import android.support.v7.widget.Toolbar
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
+import android.widget.TextView
 import com.google.firebase.auth.FirebaseAuth
+import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.nav_header.*
+import kotlinx.android.synthetic.main.navigation_drawer.*
 import org.jetbrains.anko.find
 
 /**
@@ -116,8 +121,34 @@ open class DrawerActivity: AppCompatActivity(){
             onNavItemSelected(item)
         })
 
+        //menu data
+        var listData = mutableListOf<DrawerListModel>(
 
-    }//end
+                DrawerListModel(
+                        R.drawable.ic_settings,
+                        getString(R.string.settings),
+                        AboutActivity::class.java),
+
+                DrawerListModel(
+                        R.drawable.ic_support,
+                        getString(R.string.support),
+                        AboutActivity::class.java),
+
+                DrawerListModel(
+                        R.drawable.ic_info,
+                        getString(R.string.about),
+                        AboutActivity::class.java),
+
+                DrawerListModel(
+                        R.drawable.ic_exit,
+                        getString(R.string.logout),
+                        AboutActivity::class.java)
+
+        )//end list data
+
+        //lets create populate menu list
+        drawerListView.adapter = DrawerListAdapter(this,listData)
+    }//end oncreate
 
 
 
@@ -197,16 +228,65 @@ open class DrawerActivity: AppCompatActivity(){
     //set Header info
     private fun setDrawerHeaderInfo(){
 
-        //lets get the headerView of the drawer and set the neccessary vars
-        val headerView: View = navView.getHeaderView(0)
-
         //lets get profile phot
-        val profilePic = currentUser?.phoneNumber
+        val photoUrl = currentUser?.photoUrl
 
         //if not empty lets update it
-        if(!profilePic.isNullOrBlank()){
+        if(photoUrl != null){
 
-        }//end if
+            //using glide insert pic
+            Picasso.with(this)
+                    .load(photoUrl)
+                    .placeholder(R.drawable.ic_user)
+                    .error(R.drawable.ic_user)
+                    .resize(
+                            photoViewParent.layoutParams.width,
+                            photoViewParent.layoutParams.height
+                    )
+                    .into(photoView)
+        }//end if photo
+
+        //get user Phone
+        val userPhoneNo = currentUser?.phoneNumber
+
+        //user email
+        val userEmail = currentUser?.email
+
+        //provider
+        val provider = currentUser?.providers
+
+        var emailOrPhone = ""
+
+        var displayName = currentUser?.displayName
+
+        //set display name
+        if(displayName != null){
+            nameView.text = displayName
+        }
+
+        if(userEmail != null){
+            emailOrPhone = userEmail
+        }else if(userPhoneNo != null){
+            emailOrPhone = userPhoneNo
+        }
+
+        //set the textView
+        emailOrPhoneView.text = emailOrPhone
+
+        //if the provider isnt empty
+        if(provider != null){
+
+            var providerName = provider[0].capitalize()
+
+            //sometimes the provider name is provided by a domain
+            //just remove the domain ext
+            providerName = providerName.split(".")[0]
+
+            //auth by
+            val authBy = getString(R.string.auth_by)
+
+            authByView.text = "$authBy $providerName"
+        }//end
 
 
     }//end set header info

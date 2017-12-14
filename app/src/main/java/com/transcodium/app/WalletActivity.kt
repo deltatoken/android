@@ -16,4 +16,12 @@ class WalletActivity : DrawerActivity() {
         super.onCreate(savedInstanceState)
     }
 
+    /**
+     * onBackPressed show Exit modal
+     */
+    override fun onBackPressed() {
+        //show exit app dialog
+        exitAppAlert(this)
+    }//end event
+
 }
